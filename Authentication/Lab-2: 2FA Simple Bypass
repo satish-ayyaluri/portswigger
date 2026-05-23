@@ -1,0 +1,59 @@
+# Lab: 2FA Simple Bypass
+
+## Vulnerability Type
+Authentication
+
+## Difficulty
+APPRENTICE
+
+## Platform
+PortSwigger Web Security Academy
+
+## Goal
+To bypass the two-factor authentication mechanism and access Carlos's account page.
+
+## Root Cause
+The application fails to properly enforce two-factor authentication validation.
+
+After entering valid credentials, users are redirected to the 2FA verification page. However, the application does not verify whether the 2FA step has been completed before granting access to sensitive endpoints such as:
+
+/my-account
+
+This allows attackers to bypass the second authentication factor simply by directly requesting the account page.
+
+## Exploitation Steps
+
+1. Open the login page.
+
+2. Login using your own credentials.
+
+3. Navigate to:
+   /my-account
+
+4. Observe the account page URL and then log out.
+
+5. Login again using the victim credentials provided by the lab:
+   - Username: carlos
+   - Password: montoya
+
+6. After login, the application requests a 2FA verification code.
+
+7. Instead of entering the code, manually change the URL to:
+   /my-account
+
+8. The application grants access to Carlos's account page without verifying the 2FA code.
+
+9. The lab is solved successfully.
+
+## Impact
+An attacker with valid credentials can bypass two-factor authentication and gain unauthorized access to user accounts.
+
+This can lead to:
+- Account takeover
+- Unauthorized access to sensitive information
+- Bypass of additional security protections
+
+## What I Learned
+- 2FA must be enforced server-side
+- Authentication flow logic flaws can lead to account takeover
+- URL manipulation can sometimes bypass security controls

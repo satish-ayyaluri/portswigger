@@ -1,0 +1,93 @@
+# Lab: Username Enumeration via Different Responses
+
+## Vulnerability Type
+Authentication
+
+## Difficulty
+APPRENTICE
+
+## Platform
+PortSwigger Web Security Academy
+
+## Goal
+To solve the lab, enumerate a valid username, brute-force the user's password, and access the account page.
+
+## Root Cause
+The application responds differently for:
+- Invalid username
+- Valid username with incorrect password
+
+This difference allows attackers to identify valid usernames and perform password brute-force attacks.
+
+The lab contains:
+- Predictable usernames
+- Weak passwords
+- No proper brute-force protection
+
+## Exploitation Steps
+
+1. Open the login page.
+
+2. Enter random credentials and capture the login request using Burp Suite.
+
+3. Send the request to Intruder.
+
+4. Select the username value and add payload markers:
+   §username§
+
+5. In Payloads:
+   - Choose "Simple List"
+   - Paste the provided username wordlist
+
+6. Start the attack.
+
+7. Observe the response differences:
+   - Invalid username → "Invalid username"
+   - Valid username → "Incorrect password"
+
+8. Identify the valid username:
+   agenda
+
+9. Clear the previous payload position.
+
+10. Keep the username fixed as:
+    agenda
+
+11. Select the password field and add payload markers:
+    §password§
+
+12. Paste the password wordlist into Payloads.
+
+13. Start the brute-force attack.
+
+14. Observe the responses:
+   - Successful login returns:
+     HTTP/1.1 302 Found
+
+15. Note the correct password.
+
+16. Login using the discovered credentials.
+
+17. Access the user account page to solve the lab.
+
+## Impact
+An attacker can:
+- Enumerate valid usernames
+- Perform password brute-force attacks
+- Gain unauthorized account access
+
+This can lead to account takeover if weak credentials are used.
+
+## Prevention
+- Use generic login error messages
+- Implement rate limiting
+- Add account lockout mechanisms
+- Enable MFA
+- Detect brute-force attempts
+- Use CAPTCHA protections
+
+## What I Learned
+- Different login responses can leak valid usernames
+- Missing brute-force protections increase risk
+- Weak authentication logic can lead to account takeover
+- Rate limiting is important for authentication security

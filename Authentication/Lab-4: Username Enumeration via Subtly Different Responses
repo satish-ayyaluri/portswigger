@@ -1,0 +1,81 @@
+# Lab: Username Enumeration via Subtly Different Responses
+
+## Vulnerability Type
+Authentication
+
+## Difficulty
+PRACTITIONER
+
+## Platform
+PortSwigger Web Security Academy
+
+## Goal
+To enumerate a valid username, brute-force the user's password, and access the account page.
+
+## Root Cause
+The application responds slightly differently when a valid username is supplied during login attempts.
+
+Although the error messages appear almost identical, subtle differences in the response allow attackers to distinguish valid usernames from invalid ones. This enables username enumeration and subsequent password brute-force attacks.
+
+## Exploitation Steps
+
+1. Open the login page.
+
+2. Enter random credentials and capture the login request using Burp Suite.
+
+3. Send the request to Intruder.
+
+4. Select the username parameter and add payload markers:
+   §username§
+
+5. In the Payloads section:
+   - Choose "Simple List"
+   - Paste the provided username wordlist
+
+6. Start the attack.
+
+7. Observe that most response lengths appear similar.
+
+8. To identify subtle differences, test a clearly invalid username such as:
+   satti77778899998
+
+9. Observe the response message:
+   "Invalid username or password."
+
+10. Filter and compare the Intruder responses carefully.
+
+11. Identify the valid username based on the slightly different response behavior.
+
+12. Clear the username payload position.
+
+13. Set the discovered valid username as fixed.
+
+14. Select the password parameter and add payload markers:
+   §password§
+
+15. Paste the password wordlist into the Payloads section.
+
+16. Start the brute-force attack.
+
+17. Observe the responses and identify the successful login attempt:
+   HTTP/1.1 302 Found
+
+18. Note the correct password.
+
+19. Login using the discovered credentials.
+
+20. Successfully access the account page and solve the lab.
+
+## Impact
+An attacker can:
+- Enumerate valid usernames
+- Perform password brute-force attacks
+- Gain unauthorized access to user accounts
+
+This can lead to account takeover when weak credentials are used.
+
+## What I Learned
+- Subtle response differences can leak valid usernames
+- Authentication responses should be consistent
+- Weak brute-force protections increase account takeover risk
+- Response analysis is important during security testing

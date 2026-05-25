@@ -1,0 +1,74 @@
+# Lab: Broken Brute-Force Protection, IP Block
+
+## Vulnerability Type
+Authentication
+
+## Difficulty
+PRACTITIONER
+
+## Platform
+PortSwigger Web Security Academy
+
+## Goal
+To brute-force the victim's password, log in, and access the account page.
+
+## Root Cause
+The application implements weak brute-force protection based on failed login attempts.
+
+After several failed attempts, the application temporarily blocks further login requests. However, the failed-attempt counter resets after a successful login.
+
+This logic flaw allows attackers to bypass the brute-force protection by periodically sending valid credentials between failed login attempts.
+
+## Exploitation Steps
+
+1. Open the login page.
+
+2. Enter random credentials with a long password and capture the request using Burp Suite.
+
+3. Send the request to Intruder.
+
+4. Observe that after several failed login attempts, the application blocks the IP address.
+
+5. Identify that a successful login resets the failed-attempt counter.
+
+6. Use valid credentials for your own account after every two failed login attempts.
+
+7. Create a custom password list where:
+   - Every third request contains valid credentials
+   - Other requests contain brute-force attempts for Carlos
+
+8. Use a Python script to generate the custom payload list.
+
+9. Configure Intruder attack type as:
+   Pitchfork
+
+10. Add payload positions for:
+   - Username
+   - Password
+
+11. Paste the generated payloads into Intruder.
+
+12. Start the attack.
+
+13. Observe the responses and identify:
+   HTTP/1.1 302 Found
+
+14. Find the successful login attempt containing Carlos's credentials.
+
+15. Login using the discovered password.
+
+16. Successfully access Carlos's account page and solve the lab.
+
+## Impact
+An attacker can bypass brute-force protections and gain unauthorized access to user accounts.
+
+This can lead to:
+- Credential brute-forcing
+- Unauthorized account access
+- Account takeover
+
+## What I Learned
+- Weak brute-force protection can often be bypassed through logic flaws
+- Successful logins may reset failed-attempt counters
+- Authentication protections must be enforced consistently
+- Custom payload generation can help bypass rate limits and IP blocks

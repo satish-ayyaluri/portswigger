@@ -1,0 +1,106 @@
+# Lab: Brute-forcing a Stay-Logged-In Cookie
+
+## Vulnerability Type
+
+Authentication Vulnerability
+
+## Difficulty
+
+Practitioner
+
+## Platform
+
+PortSwigger Web Security Academy
+
+## Goal
+
+To solve the lab, brute-force Carlos's stay-logged-in cookie and gain access to his account page.
+
+---
+
+# Root Cause
+
+The application implements a "stay logged in" feature using a cookie that contains predictable data.
+
+The cookie value is constructed using:
+
+* the username
+* an MD5 hash of the user's password
+
+The resulting string is then Base64 encoded and stored in the cookie.
+
+Because the password hash is weak and generated directly from the password, attackers can brute-force the cookie using common password wordlists.
+
+---
+
+# Exploitation Steps
+
+1. Open the login page.
+
+2. Log in using valid user credentials.
+
+3. Navigate to the "My Account" page.
+
+4. Intercept the request using Burp Suite and observe the cookies:
+
+   * `session`
+   * `stay-logged-in`
+
+5. Analyze the `stay-logged-in` cookie value.
+
+6. Decode the cookie from Base64 format.
+
+7. Observe the structure:
+
+```text id="vf69wo"
+wiener:51dc30ddc473d43a6011e9ebba6ca770
+```
+
+8. Identify that:
+
+   * `wiener` is the username
+   * the second value is an MD5 password hash
+
+9. Send the request to Burp Intruder.
+
+10. Remove the `session` cookie and keep only the `stay-logged-in` cookie.
+
+11. Configure Intruder payload processing:
+
+* Use a password wordlist
+* Apply MD5 hash processing
+* Prefix with the victim username (`carlos:`)
+* Base64 encode the final value
+
+12. Start the attack.
+
+13. Observe the responses and identify the successful login based on:
+
+* HTTP status code `200`
+* account page response
+* absence of authentication errors
+
+14. Use the valid cookie to access Carlos's account.
+
+15. Lab solved.
+
+---
+
+# Impact
+
+An attacker can:
+
+* brute-force persistent authentication cookies
+* bypass authentication
+* gain unauthorized access to user accounts
+
+This can lead to full account takeover.
+
+---
+
+# What I Learned
+
+* Weak cookie construction can expose authentication mechanisms.
+* MD5 is insecure for password-related functionality.
+* Base64 encoding is not encryption and can be easily reversed.
+* Persistent login cookies should use securely generated random tokens instead of predictable values.

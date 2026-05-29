@@ -1,0 +1,83 @@
+# Lab: Username Enumeration via Account Lock
+
+## Vulnerability Type
+
+Authentication Vulnerability
+
+## Difficulty
+
+Practitioner
+
+## Platform
+
+PortSwigger Web Security Academy
+
+## Goal
+
+To solve the lab, brute-force the victim's password, then log in to their account page.
+
+---
+
+# Root Cause
+
+The application implements account lockout protection against brute-force attacks. However, the response behavior differs for valid and invalid usernames.
+
+When a valid username receives multiple failed login attempts, the account becomes temporarily locked. Invalid usernames do not trigger the same behavior. This difference allows attackers to enumerate valid usernames and perform password brute-forcing.
+
+---
+
+# Exploitation Steps
+
+1. Open the login page.
+
+2. Enter random credentials and intercept the login request using Burp Suite.
+
+3. Send the request to Burp Intruder.
+
+4. Select the username and password parameters as payload positions.
+
+5. Choose the **Cluster Bomb** attack type.
+
+6. Use a username wordlist and set the password payload to a fixed invalid password.
+
+7. Start the attack and observe the response length/status.
+
+8. Notice that one username triggers an account lock message after multiple attempts.
+   This indicates a valid username.
+
+9. Clear the previous attack configuration.
+
+10. Keep the discovered valid username fixed.
+
+11. Set the password field as the payload position and use a password wordlist.
+
+12. Change the attack type to **Sniper**.
+
+13. Start the attack and monitor the responses.
+
+14. Observe a response with a different length and without an error message.
+
+15. Use the identified credentials to log in successfully.
+
+16. Access the account page to solve the lab.
+
+---
+
+# Impact
+
+An attacker can:
+
+* Enumerate valid usernames
+* Perform targeted password brute-force attacks
+* Gain unauthorized access to user accounts
+
+This can ultimately lead to account takeover.
+
+---
+
+# What I Learned
+
+* Different server responses can lead to username enumeration.
+* Improper brute-force protection logic can weaken authentication security.
+* Response length analysis is useful during authentication testing.
+* Account lock mechanisms should behave consistently for both valid and invalid usernames.

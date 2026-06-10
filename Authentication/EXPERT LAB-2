@@ -1,0 +1,44 @@
+# Lab: 2FA Bypass Using a Brute-Force Attack
+
+## Vulnerability Type
+
+Authentication
+
+## Difficulty
+
+Expert
+
+## Platform
+
+PortSwigger Web Security Academy
+
+## Goal
+
+To solve the lab, log in to Carlos's account.
+
+## Root Cause
+
+The website uses 2FA, but it does not properly stop brute-force attacks against the verification code. Even after failed attempts, it is possible to start a new session and continue guessing codes until the correct one is found.
+
+## Exploitation Steps
+
+1. Open the login page.
+2. Log in with the provided credentials.
+3. The application asks for a 2FA verification code.
+4. After a few wrong codes, the application redirects back to the login page.
+5. Configure a Burp Suite macro to automatically perform the required login requests.
+6. Add the login requests and 2FA page request to the macro.
+7. Send the 2FA verification request to Intruder.
+8. Select the verification code as the payload position.
+9. Use numbers as the payload and start the attack.
+10. Look for a different response (302 redirect).
+11. Open that response in the browser.
+12. Successfully access Carlos's account and solve the lab.
+
+## Impact
+
+An attacker who already knows a user's username and password may be able to brute-force the 2FA code and gain access to the victim's account.
+
+## What I Learned
+
+I learned that adding 2FA alone is not enough. If the application does not properly limit verification attempts, attackers can brute-force the code and bypass the second layer of security. I also learned how to use Burp Suite macros and session handling rules to automate requests during testing.

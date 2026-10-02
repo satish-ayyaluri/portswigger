@@ -1,0 +1,64 @@
+# Lab: SQL Injection with Filter Bypass via XML Encoding
+
+## Vulnerability Type
+
+SQL Injection
+
+## Difficulty
+
+PRACTITIONER
+
+## Platform
+
+PortSwigger Web Security Academy
+
+## Goal
+
+Solve the lab by performing a SQL injection attack to retrieve the admin user's credentials and log in to the admin account.
+
+## Root Cause
+
+This lab contains a SQL injection vulnerability in the stock check feature. The stock check request sends the `productId` and `storeId` values in XML format. The results of the SQL query are returned in the application response, which makes it possible to use a UNION attack to retrieve data from other tables.
+
+## Exploitation Steps
+
+1. Opened the lab.
+
+2. Observed that the stock check feature sends the `productId` and `storeId` values in XML format.
+
+3. Placed a single quote (`'`) after the `productId` value. The response showed **"Attack detected"**.
+
+4. This indicated that the payload was being detected by a WAF/filter.
+
+5. I used a Burp Suite extension called **Hackvertor**.
+
+6. In **Extensions → Hackvertor → Encode**, I used `dec_entities` / `hex_entities` to encode the payload. This successfully bypassed the WAF.
+
+7. I used `UNION SELECT NULL` to find the number of columns.
+
+8. After finding the required column structure, I used the following payload to retrieve the usernames and passwords separately:
+
+`1 UNION SELECT username || '-' || password FROM users`
+
+9. The response displayed the passwords for the `admin` and `weiner` users.
+
+10. Finally, I used the `admin` credentials to log in to the admin account.
+
+11. The lab was successfully solved.
+
+## Impact
+
+An attacker could exploit this SQL injection vulnerability to retrieve sensitive information such as usernames and passwords from the database. This could lead to unauthorized access to user accounts, including the administrator account.
+
+## What I Learned
+
+* How to identify SQL injection in an XML-based request.
+* How a WAF can detect SQL injection payloads.
+* How Hackvertor encoding can bypass a filtering mechanism in a lab environment.
+* How to use `UNION SELECT NULL` to identify the number of columns.
+* How to use UNION-based SQL injection to retrieve data from another table.
+* How SQL injection can lead to unauthorized access when sensitive data is exposed.
+
+## Status
+
+✅ Lab Solved

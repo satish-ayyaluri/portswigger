@@ -1,0 +1,62 @@
+# Lab: SQL Injection Attack, Querying the Database Type and Version on Oracle
+
+## Vulnerability Type
+
+SQL Injection
+
+## Difficulty
+
+PRACTITIONER
+
+## Platform
+
+PortSwigger Web Security Academy
+
+## Goal
+
+To solve the lab by displaying the database version string.
+
+## Exploitation Steps
+
+1. Opened the lab.
+
+2. Observed that the stock check feature allowed me to modify the category filter.
+
+3. Placed a single quote (`'`) in the parameter. It returned an **Internal Server Error**.
+
+4. I checked the number of columns by using:
+
+`ORDER BY 2--`
+
+This confirmed that there were **2 columns**.
+
+5. Then I performed a UNION attack using:
+
+`' UNION SELECT BANNER,NULL FROM v$version--`
+
+6. I URL-encoded the payload using `Ctrl + U`. It became:
+
+`'+UNION+SELECT+BANNER,+NULL+FROM+v$version--`
+
+7. Sent the request through Burp Suite.
+
+8. The response returned the **Oracle database version**.
+
+9. The lab was successfully solved.
+
+## Impact
+
+An attacker could exploit this SQL injection vulnerability to retrieve sensitive information about the database, such as its version. Knowing the database type and version can help an attacker identify possible vulnerabilities and choose further attacks.
+
+## What I Learned
+
+* How to identify SQL injection in a category filter.
+* How to use `ORDER BY` to determine the number of columns.
+* How to perform a UNION-based SQL injection against an Oracle database.
+* How to use the `v$version` table to retrieve the Oracle database version.
+* How URL encoding can be used when sending SQL injection payloads through HTTP requests.
+* How Burp Suite can be used to modify and send SQL injection requests.
+
+## Status
+
+✅ Lab Solved

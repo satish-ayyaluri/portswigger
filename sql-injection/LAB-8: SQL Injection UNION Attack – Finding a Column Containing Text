@@ -1,0 +1,34 @@
+# SQL Injection UNION Attack – Finding a Column Containing Text
+
+**Vulnerability:** SQL Injection  
+**Difficulty:** Practitioner  
+**Platform:** PortSwigger Web Security Academy
+
+### Goal
+Find a column that accepts text and use a UNION attack to display a custom value in the response.
+
+### Steps I Followed
+
+1. Opened the lab and checked the stock check feature.
+2. Added a single quote (`'`) to the category parameter and got an Internal Server Error.
+3. Used `ORDER BY` to find the number of columns. When I tried `ORDER BY 4--+`, it returned an error, so I concluded that the query had 3 columns.
+4. Used this payload to test the columns:
+
+   `' UNION SELECT NULL,NULL,NULL--`
+
+5. Replaced the `NULL` values with text one by one to find which column accepted text.
+6. Found that the second column accepted text.
+7. Replaced the second column's value with `F3uN5y` and sent the request.
+8. The value appeared in the response, and I successfully solved the lab.
+
+### Impact
+An attacker may be able to manipulate database query results and potentially access sensitive information, depending on the vulnerability and database permissions.
+
+### What I Learned
+- How to find the number of columns using `ORDER BY`.
+- How to use a UNION attack.
+- How to identify a column that accepts text.
+- How to display a custom value in the response.
+
+### Status
+✅ Lab Solved

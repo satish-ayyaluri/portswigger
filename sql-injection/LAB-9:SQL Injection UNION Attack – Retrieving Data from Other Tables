@@ -1,0 +1,46 @@
+SQL Injection UNION Attack – Retrieving Data from Other Tables
+
+Vulnerability: SQL Injection
+ Difficulty: Practitioner
+ Platform: PortSwigger Web Security Academy
+
+Goal
+
+Retrieve usernames and passwords from the users table and log in as administrator.
+
+Steps I Followed
+
+Opened the lab and tested the category filter.
+
+Added a single quote (') in the category parameter and got an Internal Server Error.
+
+This confirmed that the category filter was vulnerable to SQL injection.
+
+The lab description already mentioned a table called users with columns username and password.
+
+I used the following payload in the category filter:
+
+SQL
+' UNION SELECT username, password FROM users--
+The application displayed the user credentials:
+Plain Text
+carlos fmxsd020t3eqagxe2154
+administrator 886zpueempw16t343in5
+wiener hdom2ffrbjc1t93fs53r
+
+I copied the administrator credentials and logged in.
+
+After logging in as administrator, the lab was solved.
+
+Impact
+
+An attacker could use SQL injection to read data from other tables and steal sensitive information such as usernames and passwords.
+
+What I Learned
+How to confirm SQL injection using '.
+How to use a UNION attack to retrieve data from another table.
+How to extract usernames and passwords from the database.
+How exposed credentials can lead to account compromise.
+Status
+
+✅ Lab Solved

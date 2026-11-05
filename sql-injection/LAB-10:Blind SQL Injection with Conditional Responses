@@ -1,0 +1,61 @@
+Blind SQL Injection with Conditional Responses
+
+Vulnerability: Blind SQL Injection
+ Difficulty: Practitioner
+ Platform: PortSwigger Web Security Academy
+
+Goal
+
+Find the administrator password and log in.
+
+Steps I Followed
+
+I intercepted the request and tested the TrackingId cookie.
+
+True condition:
+
+SQL
+TrackingId=xyz' AND '1'='1
+
+The Welcome back message appeared.
+
+False condition:
+
+SQL
+TrackingId=xyz' AND '1'='2
+ 
+
+The Welcome back message disappeared.
+
+This confirmed a blind SQL injection vulnerability.
+
+Next, I found the password length using the LENGTH() function. The administrator password length was 20.
+
+Then I used:
+
+SQL
+TrackingId=xyz' AND (SELECT SUBSTRING(password,1,1)
+FROM users
+WHERE username='administrator')='a'--
+
+Using Burp Intruder, I tested characters for each position of the password.
+
+Whenever the Welcome back message appeared, I knew the character was correct.
+
+I repeated this process until I found all 20 characters of the password.
+
+Then I logged in as administrator and solved the lab.
+
+Impact
+
+An attacker could extract sensitive data from the database even when error messages are hidden.
+
+What I Learned
+How to identify blind SQL injection.
+How to use true/false responses to extract data.
+How to find password length using LENGTH().
+How to extract characters using SUBSTRING().
+How to automate the process with Burp Suite Intruder.
+Status
+
+✅ Lab Solved

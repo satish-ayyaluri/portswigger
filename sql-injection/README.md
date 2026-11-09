@@ -41,6 +41,7 @@ This repository documents my hands-on learning and practice of SQL Injection vul
 ## Evidence of Completion
 
 See the `screenshots/` directory for learning path completion evidence.
+![SQL Injection Learning Path Completed](screenshots/01-SQL-Injection-Learning-Path-Completed.png)
 
 ## Learning Platform
 

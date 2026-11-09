@@ -1,0 +1,37 @@
+Lab #14 – Blind SQL Injection with Time Delays and Information Retrieval
+
+Vulnerable Parameter:
+- Tracking cookie
+
+End Goal:
+- Demonstrate time-based blind SQL injection.
+- Retrieve administrator account information.
+- Authenticate as the administrator user.
+
+Analysis:
+1. Confirmed the TrackingId cookie was vulnerable to SQL injection by observing delayed server responses.
+
+2. Verified the existence of the users table through conditional time delays.
+
+3. Enumerated the administrator account details using boolean conditions and response timing.
+
+4. Determined the password length by testing character length conditions and analyzing server delays.
+
+5. Extracted the administrator password one character at a time using conditional checks and time-based responses.
+
+6. Successfully authenticated as the administrator user.
+
+Result:
+- Confirmed a time-based blind SQL injection vulnerability.
+- Retrieved administrator credentials through timing analysis.
+- Logged in as the administrator account.
+
+Key Takeaway:
+- Even when an application returns no visible errors or query output, sensitive data can still be extracted through response-time differences.
+
+Mitigation:
+- Use parameterized queries.
+- Validate and sanitize user input.
+- Apply least-privilege database permissions.
+- Monitor for abnormal query execution times.
+- Implement a Web Application Firewall (WAF).

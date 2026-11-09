@@ -1,0 +1,24 @@
+Lab #16 – Blind SQL Injection with Out-of-Band Data Exfiltration
+
+Vulnerable Parameter:
+
+Tracking cookie
+
+Goal:
+
+Extract the administrator password.
+Log in as the administrator user.
+
+Analysis:
+
+The application did not display query results or error messages.
+An out-of-band SQL injection payload was injected into the TrackingId cookie.
+The payload sent the administrator's password to a Burp Collaborator domain through a DNS lookup.
+Burp Collaborator received a request containing the password value.
+The extracted password was 0fpkzao19uq428v3bbde.
+The password was then used to log in as the administrator user.
+
+Result:
+
+Successfully extracted the administrator password.
+Successfully logged in as the administrator account.

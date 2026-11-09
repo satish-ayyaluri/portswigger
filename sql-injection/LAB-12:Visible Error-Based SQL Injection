@@ -1,0 +1,56 @@
+Lab #12 – Visible Error-Based SQL Injection
+
+End Goal:
+Retrieve administrator credentials through visible database errors and access the admin account.
+
+Analysis:
+- Application reflects database errors to the user.
+- TrackingId parameter is injectable.
+- Backend SQL query can be manipulated.
+- Database error messages reveal information from query results.
+
+Methodology:
+1. Identify the injectable parameter.
+2. Confirm SQL injection by causing a controlled error.
+3. Determine database type from error behavior.
+4. Use type-conversion functions to force the database to display query results inside error messages.
+5. Extract data from the users table through successive error responses.
+6. Locate administrator account information.
+7. Log in using the recovered credentials.
+
+Key Learning:
+- Error messages can become a data exfiltration channel.
+- Type conversion errors may disclose query results.
+- Database errors should never be exposed to users.
+
+Mitigations:
+- Parameterized queries.
+- Prepared statements.
+- Input validation.
+- Generic error pages.
+- Least-privileged database accounts.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Error-Based SQL Injection:
+- Relies on visible database errors.
+- Attacker injects input causing DB conversion/parsing errors.
+- Error message may reveal database information.
+- Mitigation:
+  • Parameterized queries
+  • Prepared statements
+  • Input validation
+  • Suppress detailed DB errors
+  • Least-privilege database accounts

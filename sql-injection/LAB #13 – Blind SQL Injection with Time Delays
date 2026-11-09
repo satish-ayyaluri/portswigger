@@ -1,0 +1,25 @@
+lab #13 – Blind SQL Injection with Time Delays
+
+Vulnerable Parameter:
+- Tracking cookie
+
+Goal:
+- Confirm the application is vulnerable to time-based blind SQL injection.
+
+Analysis:
+- The application did not display database errors or query results.
+- A delay function was introduced into the TrackingId cookie value.
+- The server response was significantly delayed compared to normal requests.
+- The consistent delay confirmed that the injected SQL query was executed by the database.
+
+Result:
+- Successfully identified a time-based blind SQL injection vulnerability.
+
+Key Takeaway:
+- Even when no data is returned and no errors are visible, SQL injection can be detected through changes in response time.
+
+Mitigation:
+- Use parameterized queries.
+- Validate user input.
+- Apply least-privilege database permissions.
+- Monitor unusual query execution times.

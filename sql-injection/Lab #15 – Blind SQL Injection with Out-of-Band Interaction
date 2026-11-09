@@ -1,0 +1,31 @@
+Lab #15 – Blind SQL Injection with Out-of-Band Interaction
+
+Vulnerable Parameter:
+
+Tracking cookie
+
+Goal:
+
+Trigger a DNS lookup using SQL injection.
+
+Analysis:
+
+The application did not show errors or query results.
+I injected an out-of-band SQL payload into the TrackingId cookie.
+The payload forced the database server to make a request to my Burp Collaborator domain.
+Burp Collaborator received a DNS interaction from the target server.
+
+Result:
+
+Successfully confirmed the blind SQL injection vulnerability.
+
+Key Takeaway:
+
+When no errors or data are visible, out-of-band interactions like DNS lookups can be used to verify SQL injection.
+
+Mitigation:
+
+Use parameterized queries.
+Validate user input.
+Restrict outbound network access from database servers.
+Apply least-privilege permissions.

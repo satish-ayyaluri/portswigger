@@ -1,0 +1,63 @@
+Lab: DOM XSS in document.write sink using location.search inside a select element
+Vulnerability
+
+DOM-Based Cross-Site Scripting (XSS)
+
+Source
+JavaScript
+location.search
+Sink
+JavaScript
+document.write()
+Analysis
+
+While reviewing the page source, I found that the application reads the storeId parameter from the URL and inserts it into the page using document.write().
+
+JavaScript
+document.write(...)
+
+The value was placed inside a dropdown (<select> element).
+
+Testing
+
+I added a custom value to the URL:
+
+Plain Text
+?productId=1&storeId=satish123
+
+The value appeared inside the stock checker dropdown, confirming that user input was reflected in the page.
+
+Payload
+HTML
+"></select><img src=1 onerror=alert(1)>
+Exploitation
+
+The payload closes the existing <select> element and injects a new <img> tag.
+
+HTML
+</select>
+<img src=1 onerror=alert(1)>
+
+Since the image source is invalid, the onerror event is triggered and executes JavaScript.
+
+JavaScript
+alert(1)
+Result
+
+An alert box appeared, confirming successful DOM-based XSS.
+
+Key Takeaway
+
+When testing for DOM XSS:
+
+Find user-controlled parameters.
+Check whether the value is reflected.
+Identify the source (location.search).
+Identify the sink (document.write).
+Understand the HTML context.
+Escape the context and inject a payload.
+Conclusion
+
+User-controlled data from location.search was written directly to the page using document.write() without proper sanitization. By breaking out of the <select> element and injecting an image tag with an event handler, I was able to execute JavaScript and solve the lab.
+
+✅ Lab Solved Successfully

@@ -1,0 +1,35 @@
+Lab #17 – Stored DOM XSS
+
+Vulnerable Functionality:
+
+Blog comment section
+
+Goal:
+
+Trigger alert() using a stored DOM XSS payload.
+
+Analysis:
+
+The application tries to sanitize user input using JavaScript replace() to encode angle brackets ( and >).
+replace() only replaces the first occurrence when a string is used as the search value.
+Because of this, only the first set of angle brackets is encoded.
+Any later angle brackets remain unchanged and are rendered as HTML.
+
+Payload:
+
+HTML
+<><img src=1 onerror=alert(1)>
+
+Explanation:
+
+The first <> gets encoded by the filter.
+The <img> tag remains untouched.
+Invalid image source (src=1) triggers the onerror event.
+alert(1) executes, confirming Stored DOM XSS.
+
+Result:
+
+Successfully triggered JavaScript execution via a stored comment.
+Lab solved ✅
+
+This format looks natural, simple, and good for GitHub proof notes.

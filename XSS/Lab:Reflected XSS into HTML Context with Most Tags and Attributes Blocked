@@ -1,0 +1,29 @@
+Reflected XSS into HTML Context with Most Tags and Attributes Blocked
+
+✅ Lab Solved
+
+What I Learned
+
+This lab had a reflected XSS vulnerability in the search function, but a WAF was blocking most common XSS payloads.
+
+Instead of using the usual payloads, I first checked which HTML tags and event handlers were still allowed. After finding an allowed combination, I created a payload that executed JavaScript automatically and called print().
+
+The challenge was understanding that even when many tags and attributes are blocked, a single overlooked tag or event can still lead to XSS.
+
+Key Takeaways
+WAF protection does not always stop XSS.
+Blacklist-based filtering can often be bypassed.
+Testing allowed tags and events is important.
+Reflected XSS can still exist in heavily filtered applications.
+Always look for what is allowed, not only what is blocked.
+Skills Practiced
+Reflected XSS
+WAF Bypass
+HTML Context Analysis
+Event Handler Testing
+XSS Verification
+Result
+
+Successfully bypassed the WAF and triggered JavaScript execution, solving the lab.
+
+PortSwigger XSS Lab #✅ Completed
